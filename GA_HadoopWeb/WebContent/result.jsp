@@ -8,9 +8,9 @@
 </head>
 <body>
 	<h1>This is a response</h1>
-	<form action="servlet1" method="GET">
-		<br>Your name is : ${param.username}
-		<br>Your email is : ${param.email}
+	<form action="EmpServlet" method="GET">
+		<br>Employee : ${param.empName}
+		<br>Salary : ${param.salary}
 	</form>
 </body>
 </html>
