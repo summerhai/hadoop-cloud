@@ -1,4 +1,4 @@
-package servletLayer;
+package com.iss.cloud.team15.servletLayer;
 
 import java.io.IOException;
 
@@ -7,8 +7,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import logicLayer.EmpBLL;
-import objectDTO.Employee;
+import com.iss.cloud.team15.logicLayer.ElasticMapReduceApp;
+import com.iss.cloud.team15.logicLayer.EmpBLL;
+import com.iss.cloud.team15.objectDTO.Employee;
+
 
 /**
  * Servlet implementation class EmpServlet
@@ -31,14 +33,19 @@ public class EmpServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		float salary;
 		EmpBLL empBLL = new EmpBLL();
-		Employee e = new Employee();
+		Employee emp = new Employee();
 		
 		//String empNo = request.getParameter("empNo");
 		String empName = request.getParameter("empName");
 		
 		//e = empBLL.getEmployee(Integer.parseInt(empNo));
-		e = empBLL.getEmployee(empName);
-		salary = e.getSalary();
+		emp = empBLL.getEmployee(empName);
+		salary = emp.getSalary();
+		try {
+			ElasticMapReduceApp.run(null);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		response.sendRedirect("result.jsp?empName=" + empName + "&&salary=" + salary);
 	}
