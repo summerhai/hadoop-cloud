@@ -1,8 +1,9 @@
-package dataLayer;
+package com.iss.cloud.team15.dataLayer;
 
 import java.sql.*;
 
-import objectDTO.Employee;
+import com.iss.cloud.team15.objectDTO.Employee;
+
 
 public class EmpDAO {
 	private String dbUrl = "jdbc:MySql://localhost:3306/mydb";
