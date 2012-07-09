@@ -3,7 +3,7 @@
   <display-name>AWSSampleWeb</display-name>
   <welcome-file-list>
     <welcome-file>test.html</welcome-file>
-    <welcome-file>index.htm</welcome-file>
+    <welcome-file>test.htm</welcome-file>
     <welcome-file>index.jsp</welcome-file>
     <welcome-file>default.html</welcome-file>
     <welcome-file>default.htm</welcome-file>
@@ -13,7 +13,7 @@
     <description></description>
     <display-name>EmpServlet</display-name>
     <servlet-name>EmpServlet</servlet-name>
-    <servlet-class>com.iss.cloud.team15.servletLayer.EmpServlet</servlet-class>
+    <servlet-class>servletLayer.EmpServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>EmpServlet</servlet-name>
