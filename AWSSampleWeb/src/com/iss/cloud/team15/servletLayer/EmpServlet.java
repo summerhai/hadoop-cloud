@@ -2,12 +2,13 @@ package com.iss.cloud.team15.servletLayer;
 
 import java.io.IOException;
 
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.iss.cloud.team15.logicLayer.ElasticMapReduceApp;
+//import com.iss.cloud.team15.logicLayer.ElasticMapReduceApp;
 import com.iss.cloud.team15.logicLayer.EmpBLL;
 import com.iss.cloud.team15.objectDTO.Employee;
 
@@ -41,12 +42,12 @@ public class EmpServlet extends HttpServlet {
 		//e = empBLL.getEmployee(Integer.parseInt(empNo));
 		emp = empBLL.getEmployee(empName);
 		salary = emp.getSalary();
-		try {
+		/*try {
 			Thread elasticThread = new Thread(new ElasticMapReduceApp(),"MapReduce");
 			elasticThread.run();
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
+		}*/
 		
 		response.sendRedirect("result.jsp?empName=" + empName + "&&salary=" + salary);
 	}
