@@ -7,10 +7,11 @@
 <title>This is a response</title>
 </head>
 <body>
-	<h1>This is a response</h1>
-	<form action="EmpServlet" method="GET">
+	<h3>This is a response</h3>
+	<form action="ResServlet" method="GET">
 		<br>Employee : ${param.empName}
 		<br>Salary : ${param.salary}
+		<br>Download file from Amazon S3 <input type="submit" value="download">
 	</form>
 </body>
 </html>
