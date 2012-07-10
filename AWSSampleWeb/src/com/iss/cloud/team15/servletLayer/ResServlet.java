@@ -12,7 +12,7 @@ import com.amazonaws.auth.*;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
-//import com.iss.cloud.team15.logicLayer.ElasticMapReduceApp;
+import com.iss.cloud.team15.logicLayer.ElasticMapReduceApp;
 import com.iss.cloud.team15.util.Configuration;
 
 /**
@@ -34,21 +34,38 @@ public class ResServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		/*try {
+		String stepName = null;
+		try {
 			Thread elasticThread = new Thread(new ElasticMapReduceApp(),"MapReduce");
+			ElasticMapReduceApp mapreduce = new ElasticMapReduceApp();
 			elasticThread.run();
+			stepName = mapreduce.getStep();
+			//stepName = mapreduce.step;
 		} catch (Exception e) {
 			e.printStackTrace();
-		}*/
-	
+		}	
 		
 		AWSCredentials myCredentials = new BasicAWSCredentials(getKey(), getSecret()); 
 		AmazonS3Client s3Client = new AmazonS3Client(myCredentials);   
-		String s3file = "output/Step1341934758692/part-r-00000";
+		
+		//String s3file = "output/Step1341934758692/part-r-00000";
+		String s3file = "output/" + stepName + "/part-r-00000" ;
 		S3Object object = s3Client.getObject(new GetObjectRequest("iss.wordcount", s3file));
 
 		BufferedReader reader = new BufferedReader(new InputStreamReader(object.getObjectContent()));
 		File file = new File("D://localFilename");
+		
+		Writer writer = new OutputStreamWriter(new FileOutputStream(file));
+
+		while (true) {          
+		     String line = reader.readLine();           
+		     if (line == null)
+		          break;            
+
+		     writer.write(line + "\n");
+		}
+
+		writer.close();
 		
 		// Ram's example (start)
 		OutputStream myOut = response.getOutputStream( );
@@ -70,18 +87,6 @@ public class ResServlet extends HttpServlet {
 			buf.close( );
 		} 
 	    // Ram's Example (end)
-		
-		Writer writer = new OutputStreamWriter(new FileOutputStream(file));
-
-		while (true) {          
-		     String line = reader.readLine();           
-		     if (line == null)
-		          break;            
-
-		     writer.write(line + "\n");
-		}
-
-		writer.close();
 	}
 
 	/**
