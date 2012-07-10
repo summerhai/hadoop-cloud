@@ -13,10 +13,20 @@
     <description></description>
     <display-name>EmpServlet</display-name>
     <servlet-name>EmpServlet</servlet-name>
-    <servlet-class>servletLayer.EmpServlet</servlet-class>
+    <servlet-class>com.iss.cloud.team15.servletLayer.EmpServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>EmpServlet</servlet-name>
     <url-pattern>/EmpServlet</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>ResServlet</display-name>
+    <servlet-name>ResServlet</servlet-name>
+    <servlet-class>com.iss.cloud.team15.servletLayer.ResServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ResServlet</servlet-name>
+    <url-pattern>/ResServlet</url-pattern>
   </servlet-mapping>
 </web-app>
