@@ -1,6 +1,13 @@
 package com.iss.cloud.team15.logicLayer;
 
+/*import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.Writer;*/
 import java.util.ArrayList;
+
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -18,10 +25,13 @@ import com.amazonaws.services.elasticmapreduce.model.HadoopJarStepConfig;
 import com.amazonaws.services.elasticmapreduce.model.JobFlowDetail;
 import com.amazonaws.services.elasticmapreduce.model.JobFlowExecutionState;
 import com.amazonaws.services.elasticmapreduce.model.StepConfig;
+/*import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.GetObjectRequest;
+import com.amazonaws.services.s3.model.S3Object;*/
 import com.iss.cloud.team15.util.Configuration;
 
 public class ElasticMapReduceApp implements Runnable{
-	private static final String jobflowID = "j-U2S4P8HQC0CP";
+	private static final String jobflowID = "j-3SEUGM0CDJMQH";
 	private static final String BUCKET_NAME = "iss.wordcount";
 	private static final String S3N_HADOOP_JAR = "s3n://iss.wordcount/java/wordcount.jar";
 	//private static final String S3N_LOG_URI = "s3n://" + BUCKET_NAME + "/logs";
@@ -41,6 +51,16 @@ public class ElasticMapReduceApp implements Runnable{
 	private static final List<String> ARGS_AS_LIST = Arrays.asList(JOB_ARGS);
 	    
 	static AmazonElasticMapReduce emr;
+	
+	//Vu's code (start)
+	private String step;	
+	public void setStep(String step){
+		this.step = step;
+	}
+	public String getStep(){
+		return this.step;
+	}
+	//Vu's code (end)
 
 	/**
 	 * The only information needed to create a client are security credentials
@@ -101,6 +121,8 @@ public class ElasticMapReduceApp implements Runnable{
 					if (isDone(state)) {
 						System.out.println("Job " + state + ": "+ detail.toString());
 						System.out.println("Check S3 bucket for results, SSH status @ master DNS: "+publicDNSName);
+						setStep(stepName);
+						//step = stepName;
 						break STATUS_LOOP;
 					} else if (!lastState.equals(state)) {					
 						System.out.println("Job " + state + " at "+ new Date().toString());
@@ -121,13 +143,14 @@ public class ElasticMapReduceApp implements Runnable{
 		} finally {
 			
 		}
-
 	}
 	
 	 /**
      * @param state
      * @return
      */
+	
+	
     private static boolean isDone(String value)
     {
         JobFlowExecutionState state = JobFlowExecutionState.fromValue(value);
