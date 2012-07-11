@@ -75,8 +75,8 @@ public class MapReducer{
 		job.waitForCompletion(true);
 	}
 	
-	public void runJob2() throws Exception{
-		/*Configuration config = new Configuration();
+	public static void runJob2() throws Exception{
+		Configuration config = new Configuration();
 		Job job2 = new Job(config, "GeneticOps");
 		// Change as per Amazon S3 path
 		FileInputFormat.setInputPaths(job2, new Path(Constants.JOB2_INPUTFILE));
@@ -90,7 +90,7 @@ public class MapReducer{
 		job2.setOutputKeyClass(IntWritable.class);
 		job2.setOutputValueClass(BytesWritable.class);
 		job2.setMapperClass(Map.class);
-		System.out.println("Job 1: Fitness Calculation Begins");
-		job2.waitForCompletion(true);*/
+		System.out.println("Job 2: Genetic Ops Begins");
+		job2.waitForCompletion(true);
 	}
 }

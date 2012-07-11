@@ -1,5 +1,6 @@
 package containerselection;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.jgap.BulkFitnessFunction;
@@ -128,22 +129,8 @@ public class MyBreeder extends GABreeder {
 	    }
 	    // Ensure fitness value of all chromosomes is udpated.
 	    // ---------------------------------------------------
-	    if (monitorActive) {
-	      // Monitor that fitness value of chromosomes is being updated.
-	      // -----------------------------------------------------------
-	      a_conf.getMonitor().event(
-	          IEvolutionMonitor.MONITOR_EVENT_BEFORE_UPDATE_CHROMOSOMES2,
-	          a_conf.getGenerationNr(), new Object[] {pop});
-	    }
 	    System.out.println(".. Update Chromosomes after Genetic ops");
 	   // updateChromosomes(pop, a_conf);
-	    if (monitorActive) {
-	      // Monitor that fitness value of chromosomes is being updated.
-	      // -----------------------------------------------------------
-	      a_conf.getMonitor().event(
-	          IEvolutionMonitor.MONITOR_EVENT_AFTER_UPDATE_CHROMOSOMES2,
-	          a_conf.getGenerationNr(), new Object[] {pop});
-	    }
 	    // Apply certain NaturalSelectors after GeneticOperators have been applied.
 	    // ------------------------------------------------------------------------
 	    System.out.println("Selection after GeneticOperators");
@@ -217,11 +204,9 @@ private void fillPopulationRandomlyToOriginalSize(Configuration a_conf,
 protected void updateChromosomes(Population a_pop, Configuration a_conf){
     int currentPopSize = a_pop.size();
     //---------------------------------
-    System.out.println("a_pop.size()"+a_pop.size());
+    //System.out.println("a_pop.size()"+a_pop.size());
     List<IChromosome> listOfChromosomes = a_pop.getChromosomes();
-    System.out.println("listOfChromosomes.size()"+listOfChromosomes.size());
-	//a_pop.clear();
-	//mapreduce.setPopulation(a_pop);
+    //System.out.println("listOfChromosomes.size()"+listOfChromosomes.size());
 	
 	try{
 		CreateSeqFile.createSequnceFile(listOfChromosomes);
@@ -233,12 +218,43 @@ protected void updateChromosomes(Population a_pop, Configuration a_conf){
 	catch (Exception e){
 		e.printStackTrace();
 	}
-    // Ensure all chromosomes are updated.
-    // -----------------------------------
-    //BulkFitnessFunction bulkFunction = a_conf.getBulkFitnessFunction();
-   // boolean bulkFitFunc = (bulkFunction != null);
-    //if (!bulkFitFunc) {
-    //}
+  }
+
+// Override applyGeneticOps for the second job
+protected void applyGeneticOperators(Configuration a_config, Population a_pop) {
+    int currentPopSize = a_pop.size();
+    //---------------------------------
+    //System.out.println("a_pop.size()"+a_pop.size());
+    List<IChromosome> listOfChromosomes = a_pop.getChromosomes();
+    List <Population> subpop = new ArrayList<Population>();
+    int numberOfSubPops =Constants.NUMBER_OF_SUBPOPULATIONS;
+    int subPopSize = currentPopSize/numberOfSubPops;
+    
+    for (int i=0;i<numberOfSubPops;i++){
+    	try{
+    		Population newPop = new Population(a_config,subPopSize);
+	    		for (int j=0;j<subPopSize;j++){
+	    			newPop.addChromosome(listOfChromosomes.get((i*subPopSize)+j));
+	    		}
+	    		subpop.add(newPop);
+    	}
+    	catch(Exception e){
+    		e.printStackTrace();
+    	}
+    }
+	
+	try{ //************************************//
+		// Please add a line to delete the existing sequence file
+		CreateSeqFile.createPopSequnceFile(subpop);
+		MapReducer.runJob2();
+		List <Population> returnPops= CreateSeqFile.readPopSequnceFile();
+		a_pop.clear();
+		for(int i=0;i<returnPops.size();i++)
+			a_pop.setChromosomes(returnPops.get(i).getChromosomes());
+	}
+	catch (Exception e){
+		e.printStackTrace();
+	}
   }
 
 }

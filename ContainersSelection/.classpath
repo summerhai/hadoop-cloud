@@ -29,5 +29,7 @@
 	<classpathentry kind="lib" path="/usr/lib/hadoop/hadoop-0.20.2-tools.jar"/>
 	<classpathentry kind="lib" path="/usr/lib/hadoop/hadoop-0.20.2-core.jar"/>
 	<classpathentry kind="lib" path="/home/hadoop/Desktop/jgap.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Muthukumar C/Documents/SE/Cloud computing/CA/hadoop-0.20.2/hadoop-0.20.2-core.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Muthukumar C/Documents/SE/Cloud computing/CA/LoadDistribution/dist/lib/jgap.jar" sourcepath="C:/Users/Muthukumar C/Documents/skydrive-2012-01-13/KE/KE Genetic Algorithms/JGAP/src"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
