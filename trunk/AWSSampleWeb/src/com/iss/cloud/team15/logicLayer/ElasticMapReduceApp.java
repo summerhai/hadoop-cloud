@@ -45,8 +45,8 @@ public class ElasticMapReduceApp implements Runnable{
 					JobFlowExecutionState.RUNNING
 			});
 	
-	public static String[] JOB_ARGS;
-	private static List<String> ARGS_AS_LIST;
+	public String[] JOB_ARGS;
+	private List<String> ARGS_AS_LIST;
 	    
 	static AmazonElasticMapReduce emr;
 	
