@@ -7,13 +7,11 @@
 <title>This is a response</title>
 </head>
 <body>
-	<%boolean status = %> ${param.status} <%;%>
-	
 	<form action="ResServlet" method="GET">
-		<br>Employee : ${param.empName}
-		<br>Salary : ${param.salary}
 		<br>Step : <input type="text" name="stepName" value = "${param.stepName }"/>
 		<br>Download file from Amazon S3 <input type="submit" value="download">
+		<div style="color:RED">${param.error}</div>
 	</form>
+	
 </body>
 </html>
