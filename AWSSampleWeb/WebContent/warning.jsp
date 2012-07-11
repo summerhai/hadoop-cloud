@@ -4,20 +4,14 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>This is a response</title>
+<title>Insert title here</title>
 </head>
 <body>
-	<%boolean status = %> ${param.status} <%;%>
+	<%boolean status = false;%>
 	<%if(status == false){%>
 		<script language="javascript">  
 			alert( "This is an Error message" );  
 		</script>
-	<%}%>
-	<form action="ResServlet" method="GET">
-		<br>Employee : ${param.empName}
-		<br>Salary : ${param.salary}
-		<br>Step : <input type="text" name="stepName" value = "${param.stepName }"/>
-		<br>Download file from Amazon S3 <input type="submit" value="download">
-	</form>
+	<%} %>
 </body>
 </html>
