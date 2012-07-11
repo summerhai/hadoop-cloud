@@ -79,7 +79,7 @@ public class ElasticMapReduceApp implements Runnable{
 
 		emr.setEndpoint("elasticmapreduce.ap-southeast-1.amazonaws.com");
 	}
-
+	
 	public void run(){
 
 		System.out.println("===========================================");
