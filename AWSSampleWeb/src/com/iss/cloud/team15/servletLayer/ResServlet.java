@@ -35,12 +35,13 @@ public class ResServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		String stepName = null;
+		ElasticMapReduceApp mapreduce = new ElasticMapReduceApp();
 		try {
-			Thread elasticThread = new Thread(new ElasticMapReduceApp(),"MapReduce");
-			ElasticMapReduceApp mapreduce = new ElasticMapReduceApp();
-			elasticThread.run();
+			//Thread elasticThread = new Thread(new ElasticMapReduceApp(),"MapReduce");
+			//elasticThread.run();
+			mapreduce.run();
 			stepName = mapreduce.getStep();
-			//stepName = mapreduce.step;
+			System.out.println("stepname : " + stepName);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}	
@@ -50,6 +51,7 @@ public class ResServlet extends HttpServlet {
 		
 		//String s3file = "output/Step1341934758692/part-r-00000";
 		String s3file = "output/" + stepName + "/part-r-00000" ;
+		System.out.println("s3file : " + s3file);
 		S3Object object = s3Client.getObject(new GetObjectRequest("iss.wordcount", s3file));
 
 		BufferedReader reader = new BufferedReader(new InputStreamReader(object.getObjectContent()));
