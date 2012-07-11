@@ -48,51 +48,62 @@ public class ResServlet extends HttpServlet {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}	*/
-		System.out.println("stepName : " + stepName);
+		//System.out.println("stepName : " + stepName);
 		
 		AWSCredentials myCredentials = new BasicAWSCredentials(getKey(), getSecret()); 
 		AmazonS3Client s3Client = new AmazonS3Client(myCredentials);   
 		
 		//String s3file = "output/Step1341934758692/part-r-00000";
 		String s3file = "output/" + stepName + "/part-r-00000" ;
-		System.out.println("s3file : " + s3file);
-		S3Object object = s3Client.getObject(new GetObjectRequest("iss.wordcount", s3file));
-
-		BufferedReader reader = new BufferedReader(new InputStreamReader(object.getObjectContent()));
-		File file = new File("D://localFilename");
-		
-		Writer writer = new OutputStreamWriter(new FileOutputStream(file));
-
-		while (true) {          
-		     String line = reader.readLine();           
-		     if (line == null)
-		          break;            
-
-		     writer.write(line + "\n");
+		//System.out.println("s3file : " + s3file);
+		try{
+			S3Object object = s3Client.getObject(new GetObjectRequest("iss.wordcount", s3file));
+	
+			BufferedReader reader = new BufferedReader(new InputStreamReader(object.getObjectContent()));
+			File file = new File("D://localFilename");
+			
+			Writer writer = new OutputStreamWriter(new FileOutputStream(file));
+	
+			while (true) {          
+			     String line = reader.readLine();           
+			     if (line == null)
+			          break;            
+	
+			     writer.write(line + "\n");
+			}
+	
+			writer.close();
+			
+			// Ram's example (start)
+			OutputStream myOut = response.getOutputStream( );
+			response.setContentType("text/plain");	     
+		    response.addHeader("Content-Disposition","attachment; filename=localFilename");	
+		    response.setContentLength( (int) file.length( ) );
+		    
+		    FileInputStream input = new FileInputStream(file);
+		    BufferedInputStream buf = new BufferedInputStream(input);
+		    
+		    int readBytes = 0;
+			while((readBytes = buf.read( )) != -1){
+				myOut.write(readBytes); 
+			}
+			if (myOut != null){
+				myOut.close( );
+			}   
+			if (buf != null){
+				buf.close( );
+			} 
+		    // Ram's Example (end)
+		}catch(Exception e){
+			System.out.println("the output file is not available to download");
+			//boolean status = false;
+			//response.sendRedirect("result.jsp?status=" + status);
+			response.sendRedirect("warning.jsp");
+			//response.setContentType("text/html");
+			//response.addHeader("Accept", "application/html");
+			//response.addHeader("Content-Type", "application/html");
 		}
-
-		writer.close();
 		
-		// Ram's example (start)
-		OutputStream myOut = response.getOutputStream( );
-		response.setContentType("text/plain");	     
-	    response.addHeader("Content-Disposition","attachment; filename=localFilename");	
-	    response.setContentLength( (int) file.length( ) );
-	    
-	    FileInputStream input = new FileInputStream(file);
-	    BufferedInputStream buf = new BufferedInputStream(input);
-	    
-	    int readBytes = 0;
-		while((readBytes = buf.read( )) != -1){
-			myOut.write(readBytes); 
-		}
-		if (myOut != null){
-			myOut.close( );
-		}   
-		if (buf != null){
-			buf.close( );
-		} 
-	    // Ram's Example (end)
 	}
 
 	/**
