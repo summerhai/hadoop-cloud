@@ -9,21 +9,21 @@ public class EmpBLL {
 	private final static int RATE = 20;
 	
 	public Employee getEmployee(int empNo){
-		EmpDAO empDAO = new EmpDAO();
+		//EmpDAO empDAO = new EmpDAO();
 		Employee e = new Employee();
-		e = empDAO.getEmployee(empNo);
+		//e = empDAO.getEmployee(empNo);
 		salary = e.getDaysOfWork() * RATE;
-		e.setSalary(salary);
+		e.setSalary(1000);
 		
 		return e;
 	}
 	
 	public Employee getEmployee(String empName){
-		EmpDAO empDAO = new EmpDAO();
+		//EmpDAO empDAO = new EmpDAO();
 		Employee e = new Employee();
-		e = empDAO.getEmployee(empName);
+		//e = empDAO.getEmployee(empName);
 		salary = e.getDaysOfWork() * RATE;
-		e.setSalary(salary);
+		e.setSalary(1000);
 		
 		return e;
 	}
