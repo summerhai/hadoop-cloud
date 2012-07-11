@@ -8,11 +8,7 @@
 </head>
 <body>
 	<%boolean status = %> ${param.status} <%;%>
-	<%if(status == false){%>
-		<script language="javascript">  
-			alert( "This is an Error message" );  
-		</script>
-	<%}%>
+	
 	<form action="ResServlet" method="GET">
 		<br>Employee : ${param.empName}
 		<br>Salary : ${param.salary}
