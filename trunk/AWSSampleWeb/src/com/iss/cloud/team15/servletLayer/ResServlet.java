@@ -12,7 +12,7 @@ import com.amazonaws.auth.*;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
-import com.iss.cloud.team15.logicLayer.ElasticMapReduceApp;
+//import com.iss.cloud.team15.logicLayer.ElasticMapReduceApp;
 import com.iss.cloud.team15.util.Configuration;
 
 /**
@@ -34,17 +34,21 @@ public class ResServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		String stepName = null;
-		ElasticMapReduceApp mapreduce = new ElasticMapReduceApp();
-		try {
+		String stepName = null;		
+		stepName = request.getParameter("stepName");
+		//String salary = request.getParameter("salary");
+		//String name = request.getParameter("empName");
+		//ElasticMapReduceApp mapreduce = new ElasticMapReduceApp();
+		/*try {
 			//Thread elasticThread = new Thread(new ElasticMapReduceApp(),"MapReduce");
 			//elasticThread.run();
-			mapreduce.run();
-			stepName = mapreduce.getStep();
+			//mapreduce.run();
+			//stepName = mapreduce.getStep();
 			System.out.println("stepname : " + stepName);
 		} catch (Exception e) {
 			e.printStackTrace();
-		}	
+		}	*/
+		System.out.println("stepName : " + stepName);
 		
 		AWSCredentials myCredentials = new BasicAWSCredentials(getKey(), getSecret()); 
 		AmazonS3Client s3Client = new AmazonS3Client(myCredentials);   
