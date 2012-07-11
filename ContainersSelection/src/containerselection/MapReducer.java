@@ -60,11 +60,11 @@ public class MapReducer{
 		Configuration config = new Configuration();
 		Job job = new Job(config, "fitnesscalculation");
 		// Change as per Amazon S3 path
-		FileInputFormat.setInputPaths(job, new Path("SeqInput"));
+		FileInputFormat.setInputPaths(job, new Path(Constants.JOB1_INPUTFILE));
 		// Erase previous run output (if any)
 		FileSystem.get(config).delete(new Path("output"), true);
 		// Change as per Amazon S3 path
-		FileOutputFormat.setOutputPath(job, new Path("output"));
+		FileOutputFormat.setOutputPath(job, new Path(Constants.JOB1_OUTPUTFILE));
 		job.setInputFormatClass(SequenceFileInputFormat.class);
 		job.setOutputFormatClass(SequenceFileOutputFormat.class);
 		
@@ -76,14 +76,14 @@ public class MapReducer{
 	}
 	
 	public void runJob2() throws Exception{
-		Configuration config = new Configuration();
+		/*Configuration config = new Configuration();
 		Job job2 = new Job(config, "GeneticOps");
 		// Change as per Amazon S3 path
-		FileInputFormat.setInputPaths(job2, new Path("SeqInput"));
+		FileInputFormat.setInputPaths(job2, new Path(Constants.JOB2_INPUTFILE));
 		// Erase previous run output (if any)
 		FileSystem.get(config).delete(new Path("output"), true);
 		// Change as per Amazon S3 path
-		FileOutputFormat.setOutputPath(job, new Path("output"));
+		FileOutputFormat.setOutputPath(job2, new Path(Constants.JOB2_OUTPUTFILE));
 		job2.setInputFormatClass(SequenceFileInputFormat.class);
 		job2.setOutputFormatClass(SequenceFileOutputFormat.class);
 		
@@ -91,6 +91,6 @@ public class MapReducer{
 		job2.setOutputValueClass(BytesWritable.class);
 		job2.setMapperClass(Map.class);
 		System.out.println("Job 1: Fitness Calculation Begins");
-		job2.waitForCompletion(true);
+		job2.waitForCompletion(true);*/
 	}
 }

@@ -22,7 +22,7 @@ public class CreateSeqFile {
 		//BufferedWriter bw = new BufferedWriter(new FileWriter("sequencefilelog"));
 		Configuration config = new Configuration();
 		FileSystem fileSystem = FileSystem.get(config);
-		Path outputPath = new Path("SeqInput/empty.txt");
+		Path outputPath = new Path(Constants.SEQ_WRITE_FILE);
 		System.out.println("Call in Create Sequnce File Writer");
 		System.out.println("listOfChromosomes.size() "+listOfChromosomes.size());
 		SequenceFile.Writer swriter = 
@@ -44,9 +44,9 @@ public class CreateSeqFile {
 	 				throws Exception{
 		Configuration config = new Configuration();
 		FileSystem fileSystem = FileSystem.get(config);
-		Path outputPath = new Path("output/part-r-00000");
+		Path inputPath = new Path(Constants.SEQ_READ_FILE);
 		SequenceFile.Reader reader = new 
-			SequenceFile.Reader(fileSystem,outputPath,config);
+			SequenceFile.Reader(fileSystem,inputPath,config);
 		IntWritable key = new IntWritable();
 		BytesWritable value = new BytesWritable();
 		List<IChromosome> listOfChromosomes = new ArrayList<IChromosome>();

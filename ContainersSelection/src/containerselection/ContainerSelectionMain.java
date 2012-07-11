@@ -75,18 +75,13 @@ public class ContainerSelectionMain {
 
 package containerselection;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 
 import org.jgap.Chromosome;
 import org.jgap.FitnessFunction;
 import org.jgap.Gene;
 import org.jgap.Genotype;
-import org.jgap.IBreeder;
 import org.jgap.IChromosome;
 import org.jgap.InvalidConfigurationException;
 import org.jgap.impl.FixedBinaryGene;
@@ -100,7 +95,7 @@ public class ContainerSelectionMain {
 	
 	public ContainerSelectionMain()	
 			throws FileNotFoundException,IOException{
-		 payload= new Payload("input/containersel.csv",64); 
+		 payload= new Payload(Constants.CSV_FILE,64); 
 		 printPayload();
 	}
 	
