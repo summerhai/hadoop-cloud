@@ -35,8 +35,8 @@ public class ElasticMapReduceApp implements Runnable{
 	private static final String BUCKET_NAME = "iss.wordcount";
 	private static final String S3N_HADOOP_JAR = "s3n://iss.wordcount/java/wordcount.jar";
 	//private static final String S3N_LOG_URI = "s3n://" + BUCKET_NAME + "/logs";
-	private static final UUID RANDOM_UUID = UUID.randomUUID();
-	private static final String STEP_NAME = "wordcount-" + RANDOM_UUID.toString();
+	//private static final UUID RANDOM_UUID = UUID.randomUUID();
+	private static String STEP_NAME;// = "wordcount-" + RANDOM_UUID.toString();
 	private static final List<JobFlowExecutionState> DONE_STATES = Arrays
 			.asList(new JobFlowExecutionState[] {
 					JobFlowExecutionState.COMPLETED,
@@ -45,10 +45,8 @@ public class ElasticMapReduceApp implements Runnable{
 					JobFlowExecutionState.RUNNING
 			});
 	
-	public static String[] JOB_ARGS =
-	        new String[] { "s3n://" + BUCKET_NAME + "/input/Gitanjali.txt",
-	                      "s3n://" + BUCKET_NAME + "/output/" + STEP_NAME};
-	private static final List<String> ARGS_AS_LIST = Arrays.asList(JOB_ARGS);
+	public static String[] JOB_ARGS;
+	private static List<String> ARGS_AS_LIST;
 	    
 	static AmazonElasticMapReduce emr;
 	
@@ -93,11 +91,16 @@ public class ElasticMapReduceApp implements Runnable{
 			System.err.println(stepName);
 
 			request.setJobFlowId(jobflowID);
-
+			STEP_NAME = stepName;
+			
 			ArrayList<StepConfig> steps = new ArrayList<StepConfig>();
 			StepConfig stepConfig = new StepConfig();
 			stepConfig.setActionOnFailure("CANCEL_AND_WAIT");
 			HadoopJarStepConfig jarsetup = new HadoopJarStepConfig();
+			
+			JOB_ARGS = new String[] { "s3n://" + BUCKET_NAME + "/input/Gitanjali.txt",
+                     "s3n://" + BUCKET_NAME + "/output/" + STEP_NAME};
+			ARGS_AS_LIST = Arrays.asList(JOB_ARGS);
 			
 			jarsetup.setArgs(ARGS_AS_LIST);
 			jarsetup.setJar(S3N_HADOOP_JAR);
