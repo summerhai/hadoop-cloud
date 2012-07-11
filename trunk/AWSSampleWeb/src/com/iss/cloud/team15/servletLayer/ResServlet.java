@@ -95,10 +95,11 @@ public class ResServlet extends HttpServlet {
 			} 
 		    // Ram's Example (end)
 		}catch(Exception e){
-			System.out.println("the output file is not available to download");
-			//boolean status = false;
-			//response.sendRedirect("result.jsp?status=" + status);
-			response.sendRedirect("warning.jsp");
+			System.out.println("The output file is not available to download");
+			
+			String error = "The output file is not available to download";
+			response.sendRedirect("result.jsp?error=" + error);
+			//response.sendRedirect("warning.jsp");
 			//response.setContentType("text/html");
 			//response.addHeader("Accept", "application/html");
 			//response.addHeader("Content-Type", "application/html");
