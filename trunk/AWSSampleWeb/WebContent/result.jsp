@@ -16,7 +16,9 @@
 	</form>
 	
 	<%@ page import="com.iss.cloud.team15.logicLayer.AuthUploadFiles" %>
-	<% AuthUploadFiles upload = new AuthUploadFiles(); %>
+	<%	AuthUploadFiles upload = new AuthUploadFiles(); 
+		upload.authUpload();
+	%>
 	<form action="https://iss.wordcount.s3.amazonaws.com/" method="post" enctype="multipart/form-data">
       <input type="hidden" name="key" value="uploads/${filename}">
       <input type="hidden" name="AWSAccessKeyId" value="<%=upload.getAccessKey()%>"> 
