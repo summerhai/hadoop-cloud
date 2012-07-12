@@ -30,14 +30,14 @@
       <input type="hidden" name="redirect" value="http://www.telescource.com" />
       <!-- Include any additional input fields here -->
 
-      File to upload to S3: (1)
+      File to upload to S3: (1 - using POST HTML Form)
       <input name="file1" type="file"> 
       <br> 
       Upload file to S3 <input type="submit" value="Upload"> 
     </form>
     
     <form action="UploadServlet" method="GET">
-    	File to upload to S3: (2)
+    	File to upload to S3: (2 - using S3Client and Servlet)
       	<input name="file2" type="file">
 		<br>Upload file to Amazon S3 <input type="submit" value="Upload">
 	</form>
