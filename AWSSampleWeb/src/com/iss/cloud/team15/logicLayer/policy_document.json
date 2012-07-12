@@ -1,0 +1,10 @@
+{"expiration": "2012-10-11T00:00:00Z",
+  "conditions": [ 
+    {"bucket": "iss.wordcount"}, 
+    ["starts-with", "$key", "uploads/"],
+    {"acl": "private"},
+    {"success_action_redirect": "http://localhost:8080/AWSSampleWeb/result.jsp"},
+    ["starts-with", "$Content-Type", ""],
+    ["content-length-range", 0, 1048576]
+  ]
+}
