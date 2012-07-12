@@ -1,10 +1,11 @@
 {"expiration": "2012-10-11T00:00:00Z",
   "conditions": [ 
-    {"bucket": "iss.wordcount"}, 
+    {"bucket": "mybucketphoto"}, 
     ["starts-with", "$key", "uploads/"],
     {"acl": "private"},
     {"success_action_redirect": "http://localhost:8080/AWSSampleWeb/result.jsp"},
-    ["starts-with", "$Content-Type", ""],
-    ["content-length-range", 0, 1048576]
+    ["starts-with", "$Content-Type", "plain/text"],    
+    ["content-length-range", 0, 1048576],
+    {"redirect": "http://localhost:8080/AWSSampleWeb/result.jsp"}
   ]
 }

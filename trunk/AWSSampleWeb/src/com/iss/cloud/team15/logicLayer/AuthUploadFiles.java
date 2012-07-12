@@ -68,7 +68,7 @@ public class AuthUploadFiles {
 	}
 	
 	private static String getPolicyDocument(){
-		File file = new File("policy_document.json");
+		File file = new File("D://policy_document.json");
 		int ch;
 		StringBuffer strContent = new StringBuffer("");
 	    FileInputStream fin = null;
