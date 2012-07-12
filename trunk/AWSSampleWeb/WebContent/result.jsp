@@ -27,12 +27,20 @@
       <input type="hidden" name="policy" value="<%=upload.getPolicy()%>">
       <input type="hidden" name="signature" value="<%=upload.getSignature()%>">
       <input type="hidden" name="Content-Type" value="plain/text">
+      <input type="hidden" name="redirect" value="http://www.telescource.com" />
       <!-- Include any additional input fields here -->
 
-      File to upload to S3: 
-      <input name="file" type="file"> 
+      File to upload to S3: (1)
+      <input name="file1" type="file"> 
       <br> 
       Upload file to S3 <input type="submit" value="Upload"> 
     </form>
+    
+    <form action="UploadServlet" method="GET">
+    	File to upload to S3: (2)
+      	<input name="file2" type="file">
+		<br>Upload file to Amazon S3 <input type="submit" value="Upload">
+	</form>
+	
 </body>
 </html>
