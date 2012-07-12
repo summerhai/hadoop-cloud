@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>This is a response</title>
+<title>This is a response 2</title>
 </head>
 <body>
 	<form action="ResServlet" method="GET">
@@ -19,7 +19,7 @@
 	<%	AuthUploadFiles upload = new AuthUploadFiles(); 
 		upload.authUpload();
 	%>
-	<form action="https://iss.wordcount.s3.amazonaws.com/" method="post" enctype="multipart/form-data">
+	<form action="https://mybucketphoto.s3.amazonaws.com/" method="post" enctype="multipart/form-data">
       <input type="hidden" name="key" value="uploads/${filename}">
       <input type="hidden" name="AWSAccessKeyId" value="<%=upload.getAccessKey()%>"> 
       <input type="hidden" name="acl" value="private"> 
