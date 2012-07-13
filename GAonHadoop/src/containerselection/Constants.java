@@ -12,6 +12,7 @@ public final class Constants {
 	public static final String SEQ_READ_FILE = "output/part-r-00000";
 	
 	public static final String CSV_FILE = "input/containersel.csv";
+	public static final String OUPUT_FILE = "output/selectedcontainers.csv";
 	
 	
 	/**
