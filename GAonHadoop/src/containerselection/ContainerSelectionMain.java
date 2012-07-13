@@ -75,7 +75,9 @@ public class ContainerSelectionMain {
 
 package containerselection;
 
+import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 
 import org.jgap.Chromosome;
@@ -152,6 +154,24 @@ public class ContainerSelectionMain {
 			    double v1 = bestSolutionSoFar.getFitnessValue();
 			    System.out.println("The best solution has a fitness value of " +
 			                       bestSolutionSoFar.getFitnessValue());
+			    writeSolutionToFile(bestSolutionSoFar);
 
+	}
+	
+	public void writeSolutionToFile(IChromosome bestSolutionSoFar)
+		throws IOException{
+		 System.out.println("Writing Solution to File...");
+		 int[] bits;
+		 BufferedWriter bw = new BufferedWriter(new FileWriter(Constants.OUPUT_FILE));
+		 for (int i=0;i<bestSolutionSoFar.size();i++){
+			 bits = (int[])bestSolutionSoFar.getGene(i).getAllele();
+			 if (bits[0] == 1){
+			/*	 System.out.print(" "+payload.getShipContainer().get(i).getContainerID());
+				 System.out.println(" "+payload.getShipContainer().get(i).getWeight());*/
+				 bw.write(payload.getShipContainer().get(i).getContainerID()
+						  + ","+payload.getShipContainer().get(i).getWeight()+"\n");
+			 }
+		 }
+		 bw.close();
 	}
 }
