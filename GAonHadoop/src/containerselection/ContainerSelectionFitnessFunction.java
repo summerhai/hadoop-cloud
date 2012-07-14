@@ -26,12 +26,13 @@ public class ContainerSelectionFitnessFunction
 			 }
 		 }
 		 
-		 error = Math.abs(maxWeight-a_Subject_Weight);
+		 double weightDifference = maxWeight-a_Subject_Weight;
 		 
-		 if (error < 0){
-			 // something must be done
+		 if (weightDifference < 0){
+			 return 10*maxWeight;
 		 }
-		 else{}
-			 return error;
+		 else{
+			 return weightDifference;
+		 }
 	}
 }
