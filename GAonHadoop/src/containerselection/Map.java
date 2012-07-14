@@ -8,13 +8,12 @@ import org.jgap.IChromosome;
 	public class Map extends
 	   Mapper<IntWritable, BytesWritable, IntWritable, BytesWritable> {
 		
-		MapReducer mapreduce;
-
+				
 	public void map(IntWritable key, BytesWritable value, Context context)// OutputCollector<Text,IntWritable> output, Reporter reporter)
 	    throws IOException, InterruptedException {
-			System.out.println("Mappper Begins");
+			//System.out.println("Mappper Begins");
 			IChromosome chrom = ObjectConverter.toObject(value.getBytes());
-			System.out.println("Object COnversion successful");
+			//System.out.println("Object COnversion successful");
 			chrom.getFitnessValue();
 			BytesWritable chromBytes = new BytesWritable(ObjectConverter.toBytes(chrom));
 			//mapreduce.getPopulation().addChromosome(chrom);

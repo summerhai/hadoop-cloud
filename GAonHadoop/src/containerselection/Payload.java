@@ -12,6 +12,7 @@ import java.util.StringTokenizer;
 
 public class Payload implements Serializable{
 	private  List<ShipContainer> shipContainer;
+	private double totalWeight =0.0;
 	
     public Payload(String file, int dataSize)
     		throws FileNotFoundException,IOException{
@@ -41,14 +42,27 @@ public class Payload implements Serializable{
     			 }
     			 else if (count == 1){
     				 weight = Double.parseDouble(st.nextToken());
+    				 totalWeight+=weight;
     			 }
     			 else{
-    				 throw new IOException("Count should 0 or 1. check file for extra spaces in lines");
+    				 throw new IOException("Count should be 0 or 1. Check file for extra spaces at line ending");
     			 }
     			 count++;
     		 }
     		 shipContainer.add(new ShipContainer(id,weight));
     	}
     	
+    	System.out.println("Total Weight of all available containers "+totalWeight);
+    	
     }
+
+
+	public double getTotalWeight() {
+		return totalWeight;
+	}
+
+
+	public void setTotalWeight(double totalWeight) {
+		this.totalWeight = totalWeight;
+	}
 }

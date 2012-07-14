@@ -94,14 +94,14 @@ import org.jgap.impl.MutationOperator;
 
 public class ContainerSelectionMain {
 	
-	double maxWeight = 3000;
+	double maxWeight = 2500;
 	Payload payload;
 	Genotype population;
 	
 	public ContainerSelectionMain()	
 			throws FileNotFoundException,IOException{
 		 payload= new Payload(Constants.CSV_FILE,64); 
-		 printPayload();
+		 //printPayload();
 	}
 	
 	//print Details of Payload of containers
@@ -130,7 +130,7 @@ public class ContainerSelectionMain {
 			    conf.setSampleChromosome(sampleChromosome);
 			    conf.setBreeder(a_breeder);
 			    conf.getGeneticOperators().clear();
-			    conf.addGeneticOperator(new CrossoverOperator(conf));
+			    conf.addGeneticOperator(new CrossoverOperator(conf,10));
 			    conf.addGeneticOperator(new MutationOperator(conf,6));
 			    // Initial Population size
 			    conf.setPopulationSize(Constants.POPULATION_SIZE);

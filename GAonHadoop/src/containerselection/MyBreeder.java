@@ -10,6 +10,7 @@ import org.jgap.IChromosome;
 import org.jgap.IInitializer;
 import org.jgap.InvalidConfigurationException;
 import org.jgap.Population;
+import org.jgap.RandomGenerator;
 import org.jgap.audit.IEvolutionMonitor;
 import org.jgap.event.GeneticEvent;
 import org.jgap.impl.GABreeder;
@@ -21,7 +22,7 @@ public class MyBreeder extends GABreeder {
 	private transient Population m_lastPop;
 
 	public Population evolve(Population a_pop, Configuration a_conf) {
-		System.out.println("Calling evolve from Extended Breeder..");
+		////System.out.println("Calling evolve from Extended Breeder..");
 	    Population pop = a_pop;
 	    BulkFitnessFunction bulkFunction = a_conf.getBulkFitnessFunction();
 	    boolean monitorActive = a_conf.getMonitor() != null;
@@ -50,7 +51,7 @@ public class MyBreeder extends GABreeder {
 	        // -------------------------------------------------------
 	        m_lastPop = pop;
 	        m_lastConf = a_conf;
-	        System.out.println("..fire genetic event..");
+	        ////System.out.println("..fire genetic event..");
 	        a_conf.getEventManager().fireGeneticEvent(
 	            new GeneticEvent(GeneticEvent.GENOTYPE_EVOLVED_EVENT, this));
 	        return pop;
@@ -61,7 +62,7 @@ public class MyBreeder extends GABreeder {
 	      // not in the very first generation.
 	      // -------------------------------------------------------------------
 	      if (a_conf.isPreserveFittestIndividual()) {
-	    	  System.out.println("Determine Fittest Chromosome..");
+	    	  ////System.out.println("Determine Fittest Chromosome..");
 	        /**@todo utilize jobs. In pop do also utilize jobs, especially for fitness
 	         * computation*/
 	        fittest = pop.determineFittestChromosome(0, pop.size() - 1);
@@ -69,7 +70,7 @@ public class MyBreeder extends GABreeder {
 	    }
 	    
 	    if (a_conf.getGenerationNr() > 0 && bulkFunction == null) {
-	    	System.out.println("Keep size constant..");
+	    	////System.out.println("Keep size constant..");
 	      keepPopSizeConstant(pop, a_conf);
 	    }
 	    // Ensure fitness value of all chromosomes is udpated.
@@ -81,19 +82,19 @@ public class MyBreeder extends GABreeder {
 	          IEvolutionMonitor.MONITOR_EVENT_BEFORE_UPDATE_CHROMOSOMES1,
 	          a_conf.getGenerationNr(), new Object[] {pop});
 	    }
-	    System.out.println("..Update Chromosome..");
+	    //System.out.println("..Update Chromosome #1");
 	    updateChromosomes(pop, a_conf); 
 	    
 	    // Apply certain NaturalSelectors before GeneticOperators will be executed.
 	    // ------------------------------------------------------------------------
-	    System.out.println("Selection before GeneticOperators");
+	    //System.out.println("Selection BEFORE GeneticOperators");
 	    pop = applyNaturalSelectors(a_conf, pop, true);
 	    int newChromIndex = pop.size();
 	    // Execute all of the Genetic Operators.
 	    // -------------------------------------
-	    System.out.println("Genetic Operators start");
+	    //System.out.println("Genetic Operators start");
 	    applyGeneticOperators(a_conf, pop);
-	    System.out.println("Genetic Operators done");
+	    //System.out.println("Genetic Operators done");
 	    // Reset fitness value of genetically operated chromosomes.
 	    
 	    int currentPopSize = pop.size();
@@ -129,17 +130,18 @@ public class MyBreeder extends GABreeder {
 	    }
 	    // Ensure fitness value of all chromosomes is udpated.
 	    // ---------------------------------------------------
-	    System.out.println(".. Update Chromosomes after Genetic ops");
+	    //System.out.println(".. Update Chromosomes #2");
 	    updateChromosomes(pop, a_conf);
 	    // Apply certain NaturalSelectors after GeneticOperators have been applied.
 	    // ------------------------------------------------------------------------
-	    System.out.println("Selection after GeneticOperators");
+	    //System.out.println("applyNaturalSelectors AFTER GeneticOperators");
 	    pop = applyNaturalSelectors(a_conf, pop, false);
+	    printAllFitness(pop);
 	    // Fill up population randomly if size dropped below specified percentage
 	    // of original size.
 	    // ----------------------------------------------------------------------
 	    fillPopulationRandomlyToOriginalSize(a_conf, pop);
-	    System.out.println("geting new Fittest chromosome");
+	    ////System.out.println("geting new Fittest chromosome");
 	    IChromosome newFittest = reAddFittest(pop, fittest);
 	    if (monitorActive && newFittest != null) {
 	      // Monitor that fitness value of chromosomes is being updated.
@@ -205,9 +207,9 @@ private void fillPopulationRandomlyToOriginalSize(Configuration a_conf,
 protected void updateChromosomes(Population a_pop, Configuration a_conf){
     int currentPopSize = a_pop.size();
     //---------------------------------
-    //System.out.println("a_pop.size()"+a_pop.size());
+    ////System.out.println("a_pop.size()"+a_pop.size());
     List<IChromosome> listOfChromosomes = a_pop.getChromosomes();
-    //System.out.println("listOfChromosomes.size()"+listOfChromosomes.size());
+    ////System.out.println("listOfChromosomes.size()"+listOfChromosomes.size());
 	
 	try{
 		CreateSeqFile.createSequnceFile(listOfChromosomes);
@@ -215,27 +217,38 @@ protected void updateChromosomes(Population a_pop, Configuration a_conf){
 		a_pop.clear();
 		listOfChromosomes = CreateSeqFile.readSequnceFile();
 		a_pop.setChromosomes(listOfChromosomes);
+		printAllFitness(a_pop);
 	}
 	catch (Exception e){
 		e.printStackTrace();
 	}
   }
 
+private void printAllFitness(Population a_pop){
+	//System.out.println("The Updated Fitness Values are ");
+	double sumFitness =0.0;
+	for (int i=0;i<a_pop.size();i++){
+		//System.out.println("Chromosome#: "+i+" "+a_pop.getChromosomes().get(i).getFitnessValue());
+		sumFitness+= a_pop.getChromosomes().get(i).getFitnessValue();
+	}
+	//System.out.println("The Average Fitness of the population : "+(sumFitness/a_pop.size()));
+	
+}
 // Override applyGeneticOps for the second job
 protected void applyGeneticOperators(Configuration a_config, Population a_pop) {
     int currentPopSize = a_pop.size();
     //---------------------------------
-    System.out.println("---------------------------------------");
-    System.out.println("Apply Genetic Operators");
-    System.out.println("a_pop.size()"+a_pop.size());
+    ////System.out.println("---------------------------------------");
+    //System.out.println("Apply Genetic Operators");
+    ////System.out.println("a_pop.size()"+a_pop.size());
     
     List<IChromosome> listOfChromosomes = a_pop.getChromosomes();
     List <Population> subpop = new ArrayList<Population>();
     int numberOfSubPops =Constants.NUMBER_OF_SUBPOPULATIONS;
     int subPopSize = currentPopSize/numberOfSubPops;
     int excess = currentPopSize - (numberOfSubPops * subPopSize);
-    System.out.println("subPopsize "+subPopSize);
-    System.out.println("Excess pop "+excess);
+    ////System.out.println("subPopsize "+subPopSize);
+    ////System.out.println("Excess pop "+excess);
     
     for (int i=0;i<numberOfSubPops;i++){
     	try{
@@ -250,7 +263,7 @@ protected void applyGeneticOperators(Configuration a_config, Population a_pop) {
 	    			newPop.addChromosome(listOfChromosomes.get(subPopSize+j));
 	    		
 	    		subpop.add(newPop);
-	    System.out.println("Subpopulation# "+i+" size is: "+newPop.size());
+	    ////System.out.println("Subpopulation# "+i+" size is: "+newPop.size());
     	}
     	catch(Exception e){
     		e.printStackTrace();
@@ -265,8 +278,8 @@ protected void applyGeneticOperators(Configuration a_config, Population a_pop) {
 		a_pop.clear();
 		for(int i=0;i<returnPops.size();i++){
 			chromosomes =returnPops.get(i).getChromosomes();
-			a_pop.setChromosomes(returnPops.get(i).getChromosomes());
-			System.out.println("Pop size after Genetic Ops"+chromosomes.size());
+			a_pop.addChromosomes(returnPops.get(i)); //BUG #1 SETTING JUST THE LAST CHROMOSOME. CRITICAL. FIX NEEDED
+			////System.out.println("Pop size after Genetic Ops"+chromosomes.size());
 		}
 	}
 	catch (Exception e){

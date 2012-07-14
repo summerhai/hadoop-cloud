@@ -16,7 +16,7 @@ public class ContainerSelectionFitnessFunction
 	}
 
 	public double evaluate(IChromosome a_subject){
-		 System.out.println("Evaluation of Fitness");
+		 //System.out.println("Evaluation of Fitness");
 		 double a_Subject_Weight = 0.0;
 		 int[] bits;
 		 for (int i=0;i<a_subject.size();i++){
@@ -29,10 +29,10 @@ public class ContainerSelectionFitnessFunction
 		 double weightDifference = maxWeight-a_Subject_Weight;
 		 
 		 if (weightDifference < 0){
-			 return 10*maxWeight;
+			 return 0;
 		 }
 		 else{
-			 return weightDifference;
+			 return a_Subject_Weight;
 		 }
 	}
 }

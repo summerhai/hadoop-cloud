@@ -15,8 +15,8 @@ public final class Constants {
 	public static final String OUPUT_FILE = "output/selectedcontainers.csv";
 	
 	public static final int CHROMOSOME_SIZE = 64;
-	public static final int POPULATION_SIZE = 50;
-	public static final int NUMBER_OF_EVOLUTIONS = 20;
+	public static final int POPULATION_SIZE = 30;
+	public static final int NUMBER_OF_EVOLUTIONS = 5;
 	
 	
 	/**
