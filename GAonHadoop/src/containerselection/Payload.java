@@ -20,8 +20,14 @@ import org.apache.hadoop.fs.Path;
 public class Payload implements Serializable{
 	private  List<ShipContainer> shipContainer;
 	private double totalWeight =0.0;
+	private int recordCount =0;
 	
-    public Payload(String file, int dataSize)
+    public int getRecordCount() {
+		return recordCount;
+	}
+
+
+	public Payload(String file, int dataSize)
     		throws FileNotFoundException,IOException{
     	shipContainer = new ArrayList<ShipContainer>();
     	readData(file);
@@ -33,7 +39,7 @@ public class Payload implements Serializable{
 	}
 
 
-	private void readData(String str)
+	private int readData(String str)
     		throws FileNotFoundException,IOException{
 		 //Amazon use
 		Configuration conf = new Configuration();
@@ -43,8 +49,8 @@ public class Payload implements Serializable{
         FSDataInputStream fdis = fs.open(filePath);
         BufferedReader br = new BufferedReader(new InputStreamReader(fdis));
     	String line;
-    	
     	while((line=br.readLine()) != null){
+    		recordCount++;
     		StringTokenizer st = new StringTokenizer(line,",");
     		 int id =0;
     		 double weight=0;
@@ -66,6 +72,8 @@ public class Payload implements Serializable{
     	}
     	
     	System.out.println("Total Weight of all available containers "+totalWeight);
+    	System.out.println("recordCount "+recordCount);
+    	return recordCount;
     	
     }
 

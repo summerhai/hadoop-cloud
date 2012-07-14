@@ -23,7 +23,7 @@ import org.jgap.impl.MutationOperator;
 
 public class ContainerSelectionMain {
 	
-	double maxWeight = 2500;
+	double maxWeight = 250000;
 	Payload payload;
 	Genotype population;
 	
@@ -55,7 +55,7 @@ public class ContainerSelectionMain {
 			            new ContainerSelectionFitnessFunction(payload,maxWeight);
 			    conf.setFitnessFunction(myFunc);
 			    Gene sampleGene = new FixedBinaryGene(conf,1);
-			    IChromosome sampleChromosome = new Chromosome(conf, sampleGene, Constants.CHROMOSOME_SIZE);
+			    IChromosome sampleChromosome = new Chromosome(conf, sampleGene, payload.getRecordCount()); // Change to Dynamic
 			    conf.setSampleChromosome(sampleChromosome);
 			    conf.setBreeder(a_breeder);
 			    conf.getGeneticOperators().clear();
