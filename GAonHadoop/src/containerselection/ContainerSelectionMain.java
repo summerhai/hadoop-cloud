@@ -1,92 +1,21 @@
-/*package containerselection;
-
-import org.jgap.Chromosome;
-import org.jgap.FitnessFunction;
-import org.jgap.Gene;
-import org.jgap.Genotype;
-import org.jgap.IChromosome;
-import org.jgap.impl.FixedBinaryGene;
-
-
-public class ContainerSelectionMain {
-	private org.jgap.Configuration conf;
-	private Genotype population;
-	
-	public ContainerSelectionMain() 
-			throws Exception {
-		configureJGAP();
-	}
-	
-	private void configureJGAP() 
-	throws Exception{
-		conf = new org.jgap.impl.DefaultConfiguration();
-		conf.setPreservFittestIndividual(true);
-	    conf.setKeepPopulationSizeConstant(true);
-	    conf.setFitnessFunction(createFitnessFunction());
-	    Gene sampleGene = new FixedBinaryGene(conf,1);
-	    IChromosome sampleChromosome = new Chromosome(conf, sampleGene, 10000);
-	    conf.setSampleChromosome(sampleChromosome);
-	    //sampleChromosome
-	    // Hi Vu, sampleChromosome is the object you need to test for serialization
-	    
-	    // Initial Population size
-	    conf.setPopulationSize(1);
-	    population = Genotype.randomInitialGenotype(conf);
-	 // Just printing the Population gene wise
-	    int[] bits;
-	    for (int pop=0; pop < population.getPopulation().size();pop++){
-	    	
-		    for(int i=0;i<sampleChromosome.size();i++){
-		    	bits = (int[])sampleChromosome.getGene(i).getAllele();
-		    	System.out.println("Genes: "+i+" "+bits[0]);
-		    }
-	    }
-	    
-	    //evolution ... Dummy now
-	    long startTime = System.currentTimeMillis();
-	    population.evolve();
-	    long endTime = System.currentTimeMillis();
-	    System.out.println("Total evolution time: " + ( endTime - startTime));
-	    // Display the best solution we found.
-	    // -----------------------------------
-	    IChromosome bestSolutionSoFar = population.getFittestChromosome();
-	    double v1 = bestSolutionSoFar.getFitnessValue();
-	    System.out.println("The best solution has a fitness value of " +
-	                       bestSolutionSoFar.getFitnessValue());
-
-	}
-	
-	private FitnessFunction createFitnessFunction(){
-		return new ContainerSelectionFitnessFunction();
-	}
-
-	public static void main(String[] args)
-			throws Exception{
-		
-		ContainerSelectionMain app = new ContainerSelectionMain();
-		// Create JGAP Configuration object and add GA config parameters
-		
-	    // Here we need to initialize the Genotype .. The initial population
-	    
-	}
-
-}
-*/
-
 package containerselection;
 
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.net.URI;
 
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FSDataOutputStream;
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.Path;
 import org.jgap.Chromosome;
 import org.jgap.FitnessFunction;
 import org.jgap.Gene;
 import org.jgap.Genotype;
 import org.jgap.IChromosome;
 import org.jgap.InvalidConfigurationException;
-import org.jgap.RandomGenerator;
 import org.jgap.impl.CrossoverOperator;
 import org.jgap.impl.FixedBinaryGene;
 import org.jgap.impl.MutationOperator;
@@ -113,7 +42,7 @@ public class ContainerSelectionMain {
 	}
 	
 	
-	public void configureJGAP() 
+	public void configureJGAP(String output) 
 			throws FileNotFoundException,IOException,InvalidConfigurationException,ClassNotFoundException{
 		// Create JGAP Configuration object and add GA config parameters
 				org.jgap.Configuration conf = new org.jgap.impl.DefaultConfiguration();
@@ -154,26 +83,36 @@ public class ContainerSelectionMain {
 			    	population.evolve();
 				    IChromosome bestSolutionSoFar = population.getFittestChromosome();
 				    double v1 = bestSolutionSoFar.getFitnessValue();
-				    System.out.println("Best Fitness as of Generation  " + (i+1) + " is "+
-				                       bestSolutionSoFar.getFitnessValue());
+				    //System.out.println("Best Fitness as of Generation  " + (i+1) + " is "+
+				    //                   bestSolutionSoFar.getFitnessValue());
 				}
 			    long endTime = System.currentTimeMillis();
-			    System.out.println("Total evolution time: " + ( endTime - startTime));
+			    //System.out.println("Total evolution time: " + ( endTime - startTime));
 			    // Display the best solution we found.
 			    // -----------------------------------
 			    IChromosome bestSolutionSoFar = population.getFittestChromosome();
 			    double v1 = bestSolutionSoFar.getFitnessValue();
-			    System.out.println("The best solution has a fitness value of " +
-			                       bestSolutionSoFar.getFitnessValue());
-			    writeSolutionToFile(bestSolutionSoFar);
+			    //System.out.println("The best solution has a fitness value of " +
+			    //                   bestSolutionSoFar.getFitnessValue());
+			    writeSolutionToFile(bestSolutionSoFar, output);
 
 	}
 	
-	public void writeSolutionToFile(IChromosome bestSolutionSoFar)
+	public void writeSolutionToFile(IChromosome bestSolutionSoFar, String output)
 		throws IOException{
-		 System.out.println("Writing Solution to File...");
+		 //System.out.println("Writing Solution to File...");
 		 int[] bits;
-		 BufferedWriter bw = new BufferedWriter(new FileWriter(Constants.OUPUT_FILE));
+		 
+		 //Amazon use
+		Configuration conf = new Configuration();
+		Path filePath = new Path(output);
+		FileSystem fs = FileSystem.get(URI.create(output), conf);
+
+		FSDataOutputStream fdos = fs.create(filePath, true);
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fdos));
+		
+		 
+		 //BufferedWriter bw = new BufferedWriter(new FileWriter(Constants.OUTPUT_FILE));
 		 for (int i=0;i<bestSolutionSoFar.size();i++){
 			 bits = (int[])bestSolutionSoFar.getGene(i).getAllele();
 			 if (bits[0] == 1){

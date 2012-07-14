@@ -28,7 +28,7 @@ public class CreateSeqFile {
 		FileSystem fileSystem = FileSystem.get(config);
 		Path outputPath = new Path(Constants.SEQ_WRITE_FILE);
 		FileSystem.get(config).delete(new Path(Constants.SEQ_WRITE_FILE), true);
-		System.out.println("Call in Create Sequnce File Writer");
+		//System.out.println("Call in Create Sequnce File Writer");
 		//System.out.println("listOfChromosomes.size() "+listOfChromosomes.size());
 		SequenceFile.Writer swriter = 
 				 SequenceFile.createWriter(fileSystem, config, outputPath,
@@ -39,31 +39,40 @@ public class CreateSeqFile {
 			IChromosome chrom = listOfChromosomes.get(i);
 			BytesWritable value = new BytesWritable(ObjectConverter.toBytes(chrom));
 			swriter.append(key,value);
-			System.out.println("Chromosome# "+i+" written");
+			//System.out.println("Chromosome# "+i+" written");
 		}
 		swriter.close();
 	}
 	
 	public static List<IChromosome> readSequnceFile() 
 	 				throws Exception{
+		String error ="";
 		Configuration config = new Configuration();
 		FileSystem fileSystem = FileSystem.get(config);
 		List<IChromosome> listOfChromosomes = new ArrayList<IChromosome>();
 		IChromosome chrom;
 		Path dPath = new Path(Constants.SEQ_READ_FILE);
 		FileStatus[] fs = fileSystem.globStatus(dPath);
-		for(FileStatus f: fs){
-			Path inputPath = f.getPath();
-			SequenceFile.Reader reader = new 
-				SequenceFile.Reader(fileSystem,inputPath,config);
-			IntWritable key = new IntWritable();
-			BytesWritable value = new BytesWritable();
-			
-			while(reader.next(key,value)){
-				chrom = ObjectConverter.toObject(value.getBytes());
-				listOfChromosomes.add(chrom);
+		try {
+			for (FileStatus f : fs) {
+				Path inputPath = f.getPath();
+				File file = new File("file.txt");
+				file.createNewFile();
+				error = "Absolute path = " + file.getAbsolutePath()+ " FileStatus: "+f.getPath().toString();;
+				
+				SequenceFile.Reader reader = new SequenceFile.Reader(
+						fileSystem, inputPath, config);
+				IntWritable key = new IntWritable();
+				BytesWritable value = new BytesWritable();
+
+				while (reader.next(key, value)) {
+					chrom = ObjectConverter.toObject(value.getBytes());
+					listOfChromosomes.add(chrom);
+				}
+				reader.close();
 			}
-			reader.close();
+		} catch (Exception e) {
+			throw new FileNotFoundException(error);
 		}
 		return listOfChromosomes;
 	}
@@ -74,7 +83,7 @@ public class CreateSeqFile {
 		FileSystem fileSystem = FileSystem.get(config);
 		Path outputPath = new Path(Constants.SEQ_WRITE_FILE);
 		FileSystem.get(config).delete(new Path(Constants.SEQ_WRITE_FILE), true);
-		System.out.println("Call in Create Sequnce File Writer");
+		//System.out.println("Call in Create Sequnce File Writer");
 		SequenceFile.Writer swriter = 
 				 SequenceFile.createWriter(fileSystem, config, outputPath,
 			     IntWritable.class, BytesWritable.class,
@@ -84,7 +93,7 @@ public class CreateSeqFile {
 			Population pop = subPops.get(i);
 			BytesWritable value = new BytesWritable(ObjectConverter.toPopBytes(pop));
 			swriter.append(key, value);
-			System.out.println("Population# "+i+" written");
+			//System.out.println("Population# "+i+" written");
 		}
 		swriter.close();
 	}
@@ -99,25 +108,26 @@ public class CreateSeqFile {
 		Population pop;
 		Path dPath = new Path(Constants.SEQ_READ_FILE);
 		FileStatus[] fs = fileSystem.globStatus(dPath);
-		for(FileStatus f: fs){
-			Path inputPath = f.getPath();
-			SequenceFile.Reader reader;
-			try {
-				File file = new File(Constants.SEQ_READ_FILE);
+		try {
+			for (FileStatus f : fs) {
+				Path inputPath = f.getPath();
+				SequenceFile.Reader reader;
+					
+				File file = new File("file.txt");
 				file.createNewFile();
-				error = "Absolute path = " + file.getAbsolutePath();
-				reader = new SequenceFile.Reader(fileSystem,
-						inputPath, config);
-			} catch (FileNotFoundException e) {
-				throw new FileNotFoundException(error);
+				error = "Absolute path = " + file.getAbsolutePath()+ " FileStatus: "+f.getPath().toString();
+				reader = new SequenceFile.Reader(fileSystem, inputPath, config);
+
+				IntWritable key = new IntWritable();
+				BytesWritable value = new BytesWritable();
+				while (reader.next(key, value)) {
+					pop = ObjectConverter.toPopObject(value.getBytes());
+					subPops.add(pop);
+				}
+				reader.close();
 			}
-			IntWritable key = new IntWritable();
-			BytesWritable value = new BytesWritable();
-			while (reader.next(key, value)) {
-				pop = ObjectConverter.toPopObject(value.getBytes());
-				subPops.add(pop);
-			}
-			reader.close();
+		} catch (Exception e) {
+			throw new FileNotFoundException(error);
 		}
 		return subPops;
 	}

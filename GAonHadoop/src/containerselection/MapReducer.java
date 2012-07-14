@@ -14,46 +14,17 @@ import org.jgap.Population;
 
 public class MapReducer{
 	
-	private String inputPath;
-	private String outputPath;
-	private Population population;
-	
-	
-	public Population getPopulation() {
-		return population;
-	}
+	private static String outputPath;
 
-
-	public void setPopulation(Population population) {
-		this.population = population;
-	}
-
-
-	public String getInputPath() {
-		return inputPath;
-	}
-
-
-	public void setInputPath(String inputPath) {
-		this.inputPath = inputPath;
-	}
-
-
-	public String getOutputPath() {
-		return outputPath;
-	}
-
-	public void setOutputPath(String outputPath) {
-		this.outputPath = outputPath;
-	}
 
 	public static void main(String[] args)
 			throws Exception{
 		MapReducer mapreducer = new MapReducer();
+		//outputPath = args[0];
 		// calls the JGAP set up part
 		
 		ContainerSelectionMain csm = new ContainerSelectionMain();
-		csm.configureJGAP();
+		csm.configureJGAP(args[0]);
 	}
 	
 	public static void runJob() throws Exception{
@@ -62,16 +33,15 @@ public class MapReducer{
 		// Change as per Amazon S3 path
 		FileInputFormat.setInputPaths(job, new Path(Constants.JOB1_INPUTFILE));
 		// Erase previous run output (if any)
-		FileSystem.get(config).delete(new Path("output"), true);
+		FileSystem.get(config).delete(new Path(Constants.JOB1_OUTPUTFILE), true);
 		// Change as per Amazon S3 path
 		FileOutputFormat.setOutputPath(job, new Path(Constants.JOB1_OUTPUTFILE));
 		job.setInputFormatClass(SequenceFileInputFormat.class);
 		job.setOutputFormatClass(SequenceFileOutputFormat.class);
-		
 		job.setOutputKeyClass(IntWritable.class);
 		job.setOutputValueClass(BytesWritable.class);
 		job.setMapperClass(Map.class);
-		System.out.println("Job 1: Fitness Calculation Begins");
+		//System.out.println("Job 1: Fitness Calculation Begins");
 		job.waitForCompletion(true);
 	}
 	
@@ -81,7 +51,7 @@ public class MapReducer{
 		// Change as per Amazon S3 path
 		FileInputFormat.setInputPaths(job2, new Path(Constants.JOB2_INPUTFILE));
 		// Erase previous run output (if any)
-		FileSystem.get(config).delete(new Path("output"), true);
+		FileSystem.get(config).delete(new Path(Constants.JOB2_OUTPUTFILE), true);
 		// Change as per Amazon S3 path
 		FileOutputFormat.setOutputPath(job2, new Path(Constants.JOB2_OUTPUTFILE));
 		job2.setInputFormatClass(SequenceFileInputFormat.class);
@@ -90,7 +60,7 @@ public class MapReducer{
 		job2.setOutputKeyClass(IntWritable.class);
 		job2.setOutputValueClass(BytesWritable.class);
 		job2.setMapperClass(Map2.class);
-		System.out.println("Job 2: Genetic Ops Begins");
+		//System.out.println("Job 2: Genetic Ops Begins");
 		job2.waitForCompletion(true);
 	}
 }

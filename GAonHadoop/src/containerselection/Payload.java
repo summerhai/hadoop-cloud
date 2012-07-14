@@ -4,10 +4,17 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.Serializable;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
+
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FSDataInputStream;
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.Path;
 
 
 public class Payload implements Serializable{
@@ -28,7 +35,13 @@ public class Payload implements Serializable{
 
 	private void readData(String str)
     		throws FileNotFoundException,IOException{
-    	BufferedReader br = new BufferedReader(new FileReader(str));
+		 //Amazon use
+		Configuration conf = new Configuration();
+		Path filePath = new Path(str);
+        FileSystem fs = FileSystem.get(URI.create(str), conf);
+
+        FSDataInputStream fdis = fs.open(filePath);
+        BufferedReader br = new BufferedReader(new InputStreamReader(fdis));
     	String line;
     	
     	while((line=br.readLine()) != null){
