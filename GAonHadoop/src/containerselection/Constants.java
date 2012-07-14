@@ -14,6 +14,10 @@ public final class Constants {
 	public static final String CSV_FILE = "input/containersel.csv";
 	public static final String OUPUT_FILE = "output/selectedcontainers.csv";
 	
+	public static final int CHROMOSOME_SIZE = 64;
+	public static final int POPULATION_SIZE = 50;
+	public static final int NUMBER_OF_EVOLUTIONS = 20;
+	
 	
 	/**
 	 * For Amazon purposes
