@@ -1,12 +1,16 @@
 package containerselection;
 
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FileStatus;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.fs.PathFilter;
 import org.apache.hadoop.io.BytesWritable;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.SequenceFile;
@@ -44,18 +48,23 @@ public class CreateSeqFile {
 	 				throws Exception{
 		Configuration config = new Configuration();
 		FileSystem fileSystem = FileSystem.get(config);
-		Path inputPath = new Path(Constants.SEQ_READ_FILE);
-		SequenceFile.Reader reader = new 
-			SequenceFile.Reader(fileSystem,inputPath,config);
-		IntWritable key = new IntWritable();
-		BytesWritable value = new BytesWritable();
 		List<IChromosome> listOfChromosomes = new ArrayList<IChromosome>();
 		IChromosome chrom;
-		while(reader.next(key,value)){
-			chrom = ObjectConverter.toObject(value.getBytes());
-			listOfChromosomes.add(chrom);
+		Path dPath = new Path(Constants.SEQ_READ_FILE);
+		FileStatus[] fs = fileSystem.globStatus(dPath);
+		for(FileStatus f: fs){
+			Path inputPath = f.getPath();
+			SequenceFile.Reader reader = new 
+				SequenceFile.Reader(fileSystem,inputPath,config);
+			IntWritable key = new IntWritable();
+			BytesWritable value = new BytesWritable();
+			
+			while(reader.next(key,value)){
+				chrom = ObjectConverter.toObject(value.getBytes());
+				listOfChromosomes.add(chrom);
+			}
+			reader.close();
 		}
-		reader.close();
 		return listOfChromosomes;
 	}
 	
@@ -82,20 +91,34 @@ public class CreateSeqFile {
 
 	public static List <Population> readPopSequnceFile() 
 				throws Exception{
-			Configuration config = new Configuration();
-			FileSystem fileSystem = FileSystem.get(config);
-			Path inputPath = new Path(Constants.SEQ_READ_FILE);
-			SequenceFile.Reader reader = new 
-				SequenceFile.Reader(fileSystem,inputPath,config);
+		String error="";
+		
+		Configuration config = new Configuration();
+		FileSystem fileSystem = FileSystem.get(config);
+		List<Population> subPops = new ArrayList<Population>();
+		Population pop;
+		Path dPath = new Path(Constants.SEQ_READ_FILE);
+		FileStatus[] fs = fileSystem.globStatus(dPath);
+		for(FileStatus f: fs){
+			Path inputPath = f.getPath();
+			SequenceFile.Reader reader;
+			try {
+				File file = new File(Constants.SEQ_READ_FILE);
+				file.createNewFile();
+				error = "Absolute path = " + file.getAbsolutePath();
+				reader = new SequenceFile.Reader(fileSystem,
+						inputPath, config);
+			} catch (FileNotFoundException e) {
+				throw new FileNotFoundException(error);
+			}
 			IntWritable key = new IntWritable();
 			BytesWritable value = new BytesWritable();
-			List<Population> subPops = new ArrayList<Population>();;
-			Population pop;
-			while(reader.next(key,value)){
+			while (reader.next(key, value)) {
 				pop = ObjectConverter.toPopObject(value.getBytes());
 				subPops.add(pop);
 			}
 			reader.close();
-			return subPops;
 		}
+		return subPops;
+	}
 }
