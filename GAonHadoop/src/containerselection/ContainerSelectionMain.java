@@ -86,12 +86,15 @@ import org.jgap.Gene;
 import org.jgap.Genotype;
 import org.jgap.IChromosome;
 import org.jgap.InvalidConfigurationException;
+import org.jgap.RandomGenerator;
+import org.jgap.impl.CrossoverOperator;
 import org.jgap.impl.FixedBinaryGene;
+import org.jgap.impl.MutationOperator;
  
 
 public class ContainerSelectionMain {
 	
-	double maxWeight = 1000;
+	double maxWeight = 3000;
 	Payload payload;
 	Genotype population;
 	
@@ -123,12 +126,14 @@ public class ContainerSelectionMain {
 			            new ContainerSelectionFitnessFunction(payload,maxWeight);
 			    conf.setFitnessFunction(myFunc);
 			    Gene sampleGene = new FixedBinaryGene(conf,1);
-			    IChromosome sampleChromosome = new Chromosome(conf, sampleGene, 64);
+			    IChromosome sampleChromosome = new Chromosome(conf, sampleGene, Constants.CHROMOSOME_SIZE);
 			    conf.setSampleChromosome(sampleChromosome);
 			    conf.setBreeder(a_breeder);
-	
+			    conf.getGeneticOperators().clear();
+			    conf.addGeneticOperator(new CrossoverOperator(conf));
+			    conf.addGeneticOperator(new MutationOperator(conf,6));
 			    // Initial Population size
-			    conf.setPopulationSize(10);
+			    conf.setPopulationSize(Constants.POPULATION_SIZE);
 			    
 			    // Here we need to initialize the Genotype .. The initial population
 			    population = Genotype.randomInitialGenotype(conf);
@@ -145,7 +150,13 @@ public class ContainerSelectionMain {
 			    
 			    //evolution ... Dummy now
 			    long startTime = System.currentTimeMillis();
-			    population.evolve();
+			    for (int i=0;i<Constants.NUMBER_OF_EVOLUTIONS;i++){
+			    	population.evolve();
+				    IChromosome bestSolutionSoFar = population.getFittestChromosome();
+				    double v1 = bestSolutionSoFar.getFitnessValue();
+				    System.out.println("Best Fitness as of Generation  " + (i+1) + " is "+
+				                       bestSolutionSoFar.getFitnessValue());
+				}
 			    long endTime = System.currentTimeMillis();
 			    System.out.println("Total evolution time: " + ( endTime - startTime));
 			    // Display the best solution we found.
