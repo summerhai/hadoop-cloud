@@ -8,13 +8,12 @@
 </head>
 <body>
 	<form action="ResServlet" method="GET">
-		<br>Name : ${param.empName}
-		<br>Salary : ${param.salary}
 		<br>Step : <input type="text" name="stepName" value = "${param.stepName }"/>
 		<br>Download file from Amazon S3 <input type="submit" value="Download">
 		<div style="color:RED">${param.error}</div>
 	</form>
 	
+	<%-- 
 	<%@ page import="com.iss.cloud.team15.logicLayer.AuthUploadFiles" %>
 	<%	AuthUploadFiles upload = new AuthUploadFiles(); 
 		upload.authUpload();
@@ -34,13 +33,8 @@
       <input name="file1" type="file"> 
       <br> 
       Upload file to S3 <input type="submit" value="Upload"> 
-    </form>
-    
-    <form action="UploadServlet" method="GET">
-    	File to upload to S3: (2 - using S3Client and Servlet)
-      	<input name="file2" type="file">
-		<br>Upload file to Amazon S3 <input type="submit" value="Upload">
-	</form>
+    </form> --%>    
+  
 	
 </body>
 </html>
