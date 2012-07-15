@@ -12,11 +12,25 @@
       	<input name="file2" type="file">
 		<br>Upload file to Amazon S3 <input type="submit" value="Upload">
 	</form>
-	
+
 	<form action="EmpServlet" method="GET">
-			<br>Size of Ship (weight): <input type="text" name="shipSize" value = "${param.shipSize }"/> 
-			<br><input type="submit" value="submit">
-		
+		<table style="width: 100%;">
+			<tr>
+				<td class="title" colspan="2"><h1>Ship Arrangement System</h1></td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td>
+				<td>Size of Ship (weight): <input type="text" name="shipSize"
+					value="${param.shipSize }" />
+				</td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td>
+				<td><input type="submit" value="submit"></td>
+			</tr>
+		</table>
 	</form>
+
+
 </body>
 </html>
