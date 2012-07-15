@@ -23,7 +23,7 @@ import org.jgap.impl.MutationOperator;
 
 public class ContainerSelectionMain {
 	
-	double maxWeight = 250000;
+	//double maxWeight = 250000;
 	Payload payload;
 	Genotype population;
 	
@@ -42,7 +42,7 @@ public class ContainerSelectionMain {
 	}
 	
 	
-	public void configureJGAP(String output) 
+	public void configureJGAP(String output, String weight) 
 			throws FileNotFoundException,IOException,InvalidConfigurationException,ClassNotFoundException{
 		// Create JGAP Configuration object and add GA config parameters
 				org.jgap.Configuration conf = new org.jgap.impl.DefaultConfiguration();
@@ -52,7 +52,7 @@ public class ContainerSelectionMain {
 			    conf.setPreservFittestIndividual(true);
 			    conf.setKeepPopulationSizeConstant(true);
 			    FitnessFunction myFunc =
-			            new ContainerSelectionFitnessFunction(payload,maxWeight);
+			            new ContainerSelectionFitnessFunction(payload, Double.valueOf(weight));
 			    conf.setFitnessFunction(myFunc);
 			    Gene sampleGene = new FixedBinaryGene(conf,1);
 			    IChromosome sampleChromosome = new Chromosome(conf, sampleGene, payload.getRecordCount()); // Change to Dynamic

@@ -20,11 +20,9 @@ public class MapReducer{
 	public static void main(String[] args)
 			throws Exception{
 		MapReducer mapreducer = new MapReducer();
-		//outputPath = args[0];
-		// calls the JGAP set up part
 		
 		ContainerSelectionMain csm = new ContainerSelectionMain();
-		csm.configureJGAP(args[0]);
+		csm.configureJGAP(args[0],args[1]);
 	}
 	
 	public static void runJob() throws Exception{

@@ -15,8 +15,8 @@ public final class Constants {
 	//public static final String OUTPUT_FILE = "output/selectedcontainers.csv";
 	public static final String OUTPUT_FILE = "s3n://iss.hadoop/output/selectedcontainers.csv";
 	//public static final int CHROMOSOME_SIZE = 100; // Change to dynamic 
-	public static final int POPULATION_SIZE = 50;
-	public static final int NUMBER_OF_EVOLUTIONS = 2;
+	public static final int POPULATION_SIZE = 30;
+	public static final int NUMBER_OF_EVOLUTIONS = 10;
 	
 	
 	/**
