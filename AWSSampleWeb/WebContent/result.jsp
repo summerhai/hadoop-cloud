@@ -4,15 +4,33 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>This is a response 2</title>
+<title>This is a response</title>
+<link rel="stylesheet" href="styles/styles.css" type="text/css"
+	media="screen">
 </head>
 <body>
 	<form action="ResServlet" method="GET">
-		<br>Step : <input type="text" name="stepName" value = "${param.stepName }"/>
-		<br>Download file from Amazon S3 <input type="submit" value="Download">
-		<div style="color:RED">${param.error}</div>
+		<table style="width: 100%;">
+			<tr>
+				<td colspan="2"><h1>Result Download</h1></td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td>
+				<td class="tbl-text">Step : <input type="text" name="stepName"
+					value="${param.stepName }" /></td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td>
+				<td class="tbl-text">Download file from Amazon S3 <input
+					type="submit" value="Download"></td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td>
+				<td style="color: RED">${param.error}</td>
+			</tr>
+		</table>
 	</form>
-	
+
 	<%-- 
 	<%@ page import="com.iss.cloud.team15.logicLayer.AuthUploadFiles" %>
 	<%	AuthUploadFiles upload = new AuthUploadFiles(); 
@@ -33,8 +51,8 @@
       <input name="file1" type="file"> 
       <br> 
       Upload file to S3 <input type="submit" value="Upload"> 
-    </form> --%>    
-  
-	
+    </form> --%>
+
+
 </body>
 </html>

@@ -8,23 +8,29 @@ body {
 	color: #333;
 	overflow-y: scroll;
 	text-rendering: optimizeLegibility;
-	background-color: #d5e9ed;
+	background-color: #dcc4b8;
 }
 
-h2 {
-	font-size: 1.3em;
+h1,h2 {
+	font-size: 1.5em;
 	line-height: 1.5em;
 	font-weight: bold;
 	margin: 20px 0 0 0;
 	padding: 0;
-	border-bottom: 3px solid #eee;
+	border-bottom: 2px solid #eee;
 
 	/* icon setup */
 	padding: 0.2em 1em 0.2em 30px;
 	background-position: 0 50%;
 	background-repeat: no-repeat;
 }
+/*************************************
+TABLE
+*************************************/
 
+.tbl-text{
+	font-size: 1em;
+}
 
 /*************************************
 SECTIONS
