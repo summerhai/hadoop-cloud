@@ -34,27 +34,21 @@ public class EmpServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		float salary;
-		EmpBLL empBLL = new EmpBLL();
-		Employee emp = new Employee();
-		
-		//String empNo = request.getParameter("empNo");
-		String empName = request.getParameter("empName");
-		
-		//e = empBLL.getEmployee(Integer.parseInt(empNo));
-		emp = empBLL.getEmployee(empName);
-		salary = emp.getSalary();
+		String shipWeight = request.getParameter("shipSize");
 		String stepName = null;
 		try {
 			//Thread elasticThread = new Thread(new ElasticMapReduceApp(),"MapReduce");
 			//elasticThread.run();
-			ElasticMapReduceApp mapreduce = new ElasticMapReduceApp();
-			mapreduce.run();
-			stepName = mapreduce.getStep();
+			//ElasticMapReduceApp mapreduce = new ElasticMapReduceApp();
+			//mapreduce.setWeight(shipWeight);
+			//mapreduce.run();
+			//stepName = mapreduce.getStep();
+			stepName = "123123";
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		response.sendRedirect("result.jsp?empName=" + empName + "&&salary=" + salary + "&&stepName=" + stepName);
+		response.sendRedirect("result.jsp?stepName=" + stepName);
 	}
 
 	/**

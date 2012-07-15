@@ -36,31 +36,16 @@ public class ResServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		String stepName = null;		
 		stepName = request.getParameter("stepName");
-		//String salary = request.getParameter("salary");
-		//String name = request.getParameter("empName");
-		//ElasticMapReduceApp mapreduce = new ElasticMapReduceApp();
-		/*try {
-			//Thread elasticThread = new Thread(new ElasticMapReduceApp(),"MapReduce");
-			//elasticThread.run();
-			//mapreduce.run();
-			//stepName = mapreduce.getStep();
-			System.out.println("stepname : " + stepName);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}	*/
-		//System.out.println("stepName : " + stepName);
 		
 		AWSCredentials myCredentials = new BasicAWSCredentials(getKey(), getSecret()); 
 		AmazonS3Client s3Client = new AmazonS3Client(myCredentials);   
 		
-		//String s3file = "output/Step1341934758692/part-r-00000";
-		String s3file = "output/" + stepName + "/part-r-00000" ;
-		//System.out.println("s3file : " + s3file);
+		String s3file = "output/" + stepName + "/selectedContainer.csv" ;
 		try{
-			S3Object object = s3Client.getObject(new GetObjectRequest("iss.wordcount", s3file));
+			S3Object object = s3Client.getObject(new GetObjectRequest("iss.hadoop", s3file));
 	
 			BufferedReader reader = new BufferedReader(new InputStreamReader(object.getObjectContent()));
-			File file = new File("D://localFilename");
+			File file = new File("D://selectedContainer");
 			
 			Writer writer = new OutputStreamWriter(new FileOutputStream(file));
 	
@@ -77,7 +62,7 @@ public class ResServlet extends HttpServlet {
 			// Ram's example (start)
 			OutputStream myOut = response.getOutputStream( );
 			response.setContentType("text/plain");	     
-		    response.addHeader("Content-Disposition","attachment; filename=localFilename");	
+		    response.addHeader("Content-Disposition","attachment; filename=selectedContainer");	
 		    response.setContentLength( (int) file.length( ) );
 		    
 		    FileInputStream input = new FileInputStream(file);
@@ -99,10 +84,6 @@ public class ResServlet extends HttpServlet {
 			
 			String error = "The output file is not available to download";
 			response.sendRedirect("result.jsp?error=" + error);
-			//response.sendRedirect("warning.jsp");
-			//response.setContentType("text/html");
-			//response.addHeader("Accept", "application/html");
-			//response.addHeader("Content-Type", "application/html");
 		}
 		
 	}
